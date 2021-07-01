@@ -2,6 +2,9 @@
 /dist
 /node_modules
 
+/nest-md-data
+/nest-pg-data
+
 # Logs
 logs
 *.log
