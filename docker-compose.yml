@@ -1,0 +1,22 @@
+version: '3.1'
+services:
+    pg:
+        image: postgres
+        container_name: nestjs-data-postgresql
+        restart: always
+        ports: 
+            - 8888:5432
+        environment: 
+            POSTGRES_PASSWORD: docker
+            POSTGRES_USER: postgres
+            POSTGRES_DB: public
+        volumes:
+            - ./nest-pg-data:/var/lib/postgresql/data
+    md:
+        image: mongo
+        container_name: nestjs-data-mongodb
+        restart: always
+        ports:
+            - 27017:27017
+        volumes: 
+            - ./nest-md-data:/data/db
