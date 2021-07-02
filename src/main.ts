@@ -6,7 +6,7 @@ import * as session from 'express-session'
 import * as helmet from 'helmet'
 import { ValidationPipe } from '@nestjs/common'
 import { LoggerMiddleware } from './core/middlewares/logger.middleware'
-
+import { port, origin } from 'config/configuration'
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
   app.use(cookieParser())
@@ -20,7 +20,7 @@ async function bootstrap() {
   )
   app.use(helmet())
   app.enableCors({
-    origin: 'http://localhost:8000',
+    origin: origin,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true
   })
@@ -28,7 +28,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api')
   app.use(LoggerMiddleware)
 
-  await app.listen(9000)
+  await app.listen(port)
   console.log(`Application is running on: ${await app.getUrl()}`)
 }
 bootstrap()
