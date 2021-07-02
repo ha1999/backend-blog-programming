@@ -24,6 +24,12 @@ export const type_orm_pg = {
     password: process.env.PASSWD_PG || "docker",
     database: process.env.DB_PG || "blog",
     entities: ["dist/**/*.entity{.ts,.js}"],
+    ssl: true,
+    extra: {
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    },
     synchronize: true,
     logging: true,
     autoLoadEntities: true
