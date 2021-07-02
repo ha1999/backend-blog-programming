@@ -24,7 +24,7 @@ export class UsersService {
   findAll(): Promise<UserResponse[]> {
     return this.usersRepository.find({
       select: ['id', 'email', 'name', 'avatar', 'is_active'],
-      relations: ['blog']
+      relations: ['blogs']
     })
   }
 
