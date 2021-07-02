@@ -22,15 +22,10 @@ export class UsersService {
     return this.usersRepository.save(user)
   }
   findAll(): Promise<UserResponse[]> {
-    return this.usersRepository
-      .createQueryBuilder()
-      .select('id')
-      .addSelect('email')
-      .addSelect('name')
-      .addSelect('avatar')
-      .addSelect('is_active')
-      .printSql()
-      .getRawMany()
+    return this.usersRepository.find({
+      select: ['id', 'email', 'name', 'avatar', 'is_active'],
+      relations: ['blog']
+    })
   }
 
   findOne(id: string): Promise<User> {

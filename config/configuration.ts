@@ -13,6 +13,21 @@ export const params = {
     authProviderX509CertUrl: serviceAccount.auth_provider_x509_cert_url,
     clientC509CertUrl: serviceAccount.client_x509_cert_url
 }
+export const port = process.env.PORT || 9000
+export const origin = process.env.ORIGIN || 'http://localhost:3009'
+export const url_mongo = process.env.URL_MONGO || 'mongodb://localhost:27017/blog'
+export const type_orm_pg = {
+    type: "postgres",
+    host: process.env.HOST_PG || "localhost",
+    port: parseInt(process.env.PORT_PG) || 8888,
+    username: process.env.USER_NAME_PG || "postgres",
+    password: process.env.PASSWD_PG || "docker",
+    database: process.env.DB_PG || "blog",
+    entities: ["dist/**/*.entity{.ts,.js}"],
+    synchronize: true,
+    logging: true,
+    autoLoadEntities: true
+  }
 
 
   
