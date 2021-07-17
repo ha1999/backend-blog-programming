@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { MongooseModule } from '@nestjs/mongoose'
 import { AuthModule } from './core/router/auth/auth.module'
 import { FireBaseModule } from './core/router/file/file.module'
+import {BlogHttpModule} from './core/router/blog/blogs-http.module'
 import { ConfigModule } from '@nestjs/config'
 import { url_mongo } from 'config/configuration'
 @Module({
@@ -15,6 +16,7 @@ import { url_mongo } from 'config/configuration'
     UserHttpModule,
     AuthModule,
     FireBaseModule,
+    BlogHttpModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: "postgres",

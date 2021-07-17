@@ -3,7 +3,9 @@ import { Entity, Column, OneToMany} from 'typeorm'
 import { Blog } from '../blog/blog.entity'
 @Entity('users')
 export class User extends BaseEntity {
-  @Column()
+  @Column({
+    unique: true
+  })
   email: string
 
   @Column()
@@ -23,7 +25,4 @@ export class User extends BaseEntity {
 
   @Column({ nullable: true, default: true })
   is_active: boolean
-
-  @OneToMany(() => Blog, blog => blog.user)
-    blogs: Blog[];
 }
