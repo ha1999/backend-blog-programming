@@ -1,11 +1,22 @@
 import { BaseEntity } from 'src/utils/base.entity'
-import { Entity, Column, ManyToOne} from 'typeorm'
-import { User } from '../users/user.entity'
+import { Entity, Column} from 'typeorm'
 
 @Entity('blogs')
 export class Blog extends BaseEntity {
   @Column()
+  email: string
+
+  @Column({
+    unique: true
+  })
   title: string
+
+  @Column()
+  img: string
+
+  @Column()
+  overview: string
+
   @Column()
   content: string
 
@@ -14,6 +25,10 @@ export class Blog extends BaseEntity {
 
   @Column({ nullable: true, default: '5-0' })
   rate: string
-  @ManyToOne(() => User, user => user.blogs)
-  user: User;
+
+  @Column()
+  tags: string
+
+  @Column({ nullable: true, default: true })
+  active: boolean
 }
