@@ -1,3 +1,4 @@
+import { TypeOrmModuleOptions } from '@nestjs/typeorm'
 import * as serviceAccount from '../firebase-adminsdk-node.json'
 export const url_firebase = process.env.URL_FIREBASE || 'https://firebasestorage.googleapis.com/v0/b/'
 export const bucket_firebase = process.env.BUCKET_FIREBASE || 'blog-programming-d228e.appspot.com'
@@ -16,23 +17,13 @@ export const params = {
 export const port = process.env.PORT || 9000
 export const origin = process.env.ORIGIN || 'http://localhost:3009'
 export const url_mongo = process.env.URL_MONGO || 'mongodb://localhost:27017/blog'
-export const type_orm_pg = {
-    type: "postgres",
-    host: process.env.HOST_PG || "localhost",
-    port: parseInt(process.env.PORT_PG) || 8888,
-    username: process.env.USER_NAME_PG || "postgres",
-    password: process.env.PASSWD_PG || "docker",
-    database: process.env.DB_PG || "blog",
-    entities: ["dist/**/*.entity{.ts,.js}"],
-    ssl: true,
-    extra: {
-      ssl: {
-        rejectUnauthorized: false,
-      },
-    },
-    synchronize: true,
-    logging: true,
-    autoLoadEntities: true
+export const type_orm_pg: TypeOrmModuleOptions = {
+  type: "postgres",
+  url: process.env.DATABASE_URL_PG,
+  entities: ["dist/**/*.entity{.ts,.js}"],
+  synchronize: true,
+  logging: true,
+  autoLoadEntities: true
   }
 
 

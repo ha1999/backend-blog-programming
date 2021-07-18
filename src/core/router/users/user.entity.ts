@@ -1,6 +1,5 @@
 import { BaseEntity } from 'src/utils/base.entity'
 import { Entity, Column, OneToMany} from 'typeorm'
-import { Blog } from '../blog/blog.entity'
 @Entity('users')
 export class User extends BaseEntity {
   @Column({

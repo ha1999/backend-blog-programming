@@ -8,8 +8,9 @@ import { MongooseModule } from '@nestjs/mongoose'
 import { AuthModule } from './core/router/auth/auth.module'
 import { FireBaseModule } from './core/router/file/file.module'
 import {BlogHttpModule} from './core/router/blog/blogs-http.module'
+import {ActionHttpModule} from './core/router/action/action-http.module'
 import { ConfigModule } from '@nestjs/config'
-import { url_mongo } from 'config/configuration'
+import { url_mongo} from 'config/configuration'
 @Module({
   imports: [
     IoModule, 
@@ -17,6 +18,7 @@ import { url_mongo } from 'config/configuration'
     AuthModule,
     FireBaseModule,
     BlogHttpModule,
+    ActionHttpModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: "postgres",
