@@ -11,6 +11,7 @@ import {BlogHttpModule} from './core/router/blog/blogs-http.module'
 import {ActionHttpModule} from './core/router/action/action-http.module'
 import { ConfigModule } from '@nestjs/config'
 import { url_mongo} from 'config/configuration'
+import { RoleActionHttpModule } from './core/router/role_action/role-action-http.module'
 @Module({
   imports: [
     IoModule, 
@@ -19,6 +20,7 @@ import { url_mongo} from 'config/configuration'
     FireBaseModule,
     BlogHttpModule,
     ActionHttpModule,
+    RoleActionHttpModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: "postgres",
