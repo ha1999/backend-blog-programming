@@ -20,11 +20,7 @@ import { url_mongo } from 'config/configuration'
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: "postgres",
-      host: process.env.HOST_PG || "localhost",
-      port: parseInt(process.env.PORT_PG) || 8888,
-      username: process.env.USER_NAME_PG || "postgres",
-      password: process.env.PASSWD_PG || "docker",
-      database: process.env.DB_PG || "blog",
+      url: process.env.DATABASE_URL_PG,
       entities: ["dist/**/*.entity{.ts,.js}"],
       synchronize: true,
       logging: true,
