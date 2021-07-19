@@ -1,34 +1,34 @@
-import { BaseEntity } from 'src/utils/base.entity'
-import { Entity, Column} from 'typeorm'
+import { BaseEntity } from 'src/utils/base.entity';
+import { Entity, Column } from 'typeorm';
 
 @Entity('blogs')
 export class Blog extends BaseEntity {
   @Column()
-  email: string
+  email: string;
 
   @Column({
-    unique: true
+    unique: true,
   })
-  title: string
+  title: string;
 
   @Column()
-  img: string
+  img: string;
 
   @Column()
-  overview: string
+  overview: string;
 
   @Column()
-  content: string
+  content: string;
 
   @Column({ nullable: true, default: 0 })
-  view: number
+  view: number;
 
   @Column({ nullable: true, default: '5-0' })
-  rate: string
+  rate: string;
 
   @Column()
-  tags: string
+  tags: string;
 
   @Column({ nullable: true, default: true })
-  active: boolean
+  active: boolean;
 }

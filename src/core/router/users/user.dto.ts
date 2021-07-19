@@ -1,38 +1,44 @@
-import { IsString, IsInt, IsBoolean, IsNotEmpty, IsOptional} from 'class-validator'
+import {
+  IsString,
+  IsInt,
+  IsBoolean,
+  IsNotEmpty,
+  IsOptional,
+} from 'class-validator';
 export class CreateUserDto {
-    @IsString()
-    @IsNotEmpty()
-    email: string
+  @IsString()
+  @IsNotEmpty()
+  email: string;
 
-    @IsString()
-    @IsNotEmpty()
-    passwd: string
+  @IsString()
+  @IsNotEmpty()
+  passwd: string;
 
-    @IsOptional()
-    @IsString()
-    name: string
+  @IsOptional()
+  @IsString()
+  name: string;
 
-    @IsOptional()
-    @IsString()
-    avatar: string
+  @IsOptional()
+  @IsString()
+  avatar: string;
 
-    @IsOptional()
-    @IsBoolean()
-    is_active: boolean
+  @IsOptional()
+  @IsBoolean()
+  is_active: boolean;
 }
 
 export class UpdateUserDto {
-    @IsInt()
-    @IsNotEmpty()
-    id: number
-    
-    @IsString()
-    @IsNotEmpty()
-    firstName: string
+  @IsInt()
+  @IsNotEmpty()
+  id: number;
 
-    @IsInt()
-    lastName: number
+  @IsString()
+  @IsNotEmpty()
+  firstName: string;
 
-    @IsBoolean()
-    is_active: boolean
+  @IsInt()
+  lastName: number;
+
+  @IsBoolean()
+  is_active: boolean;
 }
