@@ -1,6 +1,5 @@
-import { Module } from '@nestjs/common'
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common'
 import { AppController } from './app.controller'
-import { AppService } from './app.service'
 import {IoModule} from './websocket/io.module'
 import {UserHttpModule} from './core/router/users/users-http.module'
 import { TypeOrmModule } from '@nestjs/typeorm'
@@ -12,6 +11,7 @@ import {ActionHttpModule} from './core/router/action/action-http.module'
 import { ConfigModule } from '@nestjs/config'
 import { url_mongo} from 'config/configuration'
 import { RoleActionHttpModule } from './core/router/role_action/role-action-http.module'
+import { AuthMiddleware } from './core/middlewares/auth.middleware'
 @Module({
   imports: [
     IoModule, 
@@ -32,7 +32,14 @@ import { RoleActionHttpModule } from './core/router/role_action/role-action-http
   }),
     MongooseModule.forRoot(url_mongo)
   ],
-  controllers: [AppController],
-  providers: [AppService]
+  controllers: [AppController]
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(AuthMiddleware)
+      .exclude('api/auth/(.*)')
+      .forRoutes('*');
+  }
+}
+

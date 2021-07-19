@@ -15,7 +15,7 @@ export class AuthController{
         try {
             const isAuth = await this.authService.validateUser(dataAuth)
             if(isAuth) {
-                const token = this.authService.generateToken(dataAuth)
+                const token = this.authService.generateToken(isAuth)
                 res.cookie('token', token, {httpOnly: true, secure: false})
                 return {auth: isAuth}
                 
