@@ -1,11 +1,14 @@
-import { Module } from '@nestjs/common'
-import { RoleActionsModule } from './role.action.module'
-import {RoleActionsController} from './role.action.controller'
-import {RoleActionService} from './role.action.service'
+import { Global, Module } from '@nestjs/common';
+import { RoleActionsController } from './role.action.controller';
+import { RoleActionService } from './role.action.service';
+import { DatabaseModule } from '../mongodb/database.module';
+import { roleActionProviders } from './role.action.providers';
 
+@Global()
 @Module({
-    imports: [RoleActionsModule],
-    providers: [RoleActionService],
-    controllers: [RoleActionsController]
-  })
-  export class RoleActionHttpModule {}
+  imports: [DatabaseModule],
+  providers: [...roleActionProviders, RoleActionService],
+  controllers: [RoleActionsController],
+  exports: [RoleActionService],
+})
+export class RoleActionHttpModule {}
