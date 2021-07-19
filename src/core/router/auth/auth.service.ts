@@ -33,7 +33,7 @@ export class AuthService{
       return this.jwtService.sign(payload)
     }
 
-    verifyToken(token: string): Object {
+    verifyToken(token: string): {id: number, email: string, role: string} {
       return this.jwtService.verify(token)
     }
     

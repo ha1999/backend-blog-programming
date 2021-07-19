@@ -2,13 +2,14 @@ import {Controller, Get, Param, Res, Query, Post, Body, Put, Delete} from '@nest
 import { Response } from 'express';
 import { CreateActionDto, UpdateActionDto } from './action.dto';
 import { ActionsService } from './action.service';
-
+import {Action} from '../../decorators/action.decorator'
 @Controller('actions')
 
 export class ActionController {
     constructor(private readonly actionService: ActionsService){}
 
     @Get(':pageNumber')
+    @Action('GET_ALL_ACTION')
     getPageActions(@Param('pageNumber') page: number, @Query('limit') limit: number , @Res() res: Response){
         this.actionService
         .getPageAction(page, limit)

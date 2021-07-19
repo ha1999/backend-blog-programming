@@ -5,7 +5,6 @@ import * as compression from 'compression'
 import * as session from 'express-session'
 import * as helmet from 'helmet'
 import { ValidationPipe } from '@nestjs/common'
-import { LoggerMiddleware } from './core/middlewares/logger.middleware'
 import { port, origin } from 'config/configuration'
 import { NestExpressApplication } from '@nestjs/platform-express'
 import { join } from 'path'
@@ -28,7 +27,6 @@ async function bootstrap() {
   })
   app.useGlobalPipes(new ValidationPipe())
   app.setGlobalPrefix('api')
-  app.use(LoggerMiddleware)
   app.useStaticAssets(join(__dirname, '..', 'public'))
   app.setBaseViewsDir(join(__dirname, '..', 'views'))
   app.setViewEngine('hbs')

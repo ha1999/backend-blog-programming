@@ -40,7 +40,7 @@ export class RoleActionService {
     .exec()
     .then(async roleAction => {
       return this.roleActionModel
-      .count(filter)
+      .countDocuments(filter)
       .exec()
       .then(count => ({roleAction, count}))
     }
@@ -61,6 +61,10 @@ export class RoleActionService {
 
   deleteById(_id: ObjectId){
     return this.roleActionModel.deleteOne({_id})
+  }
+
+  checkActionOfRole(name: string, action_id: number){
+    return this.roleActionModel.countDocuments({name, action_id}).exec()
   }
 
 }

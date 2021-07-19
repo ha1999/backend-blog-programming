@@ -1,10 +1,10 @@
-import { Body, Controller, Get, Param, Post, Res, Query, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Res, Query, Put, Req, UseGuards } from '@nestjs/common';
 import { RoleActionService } from './role.action.service';
 import { CreateRoleActionDto } from './role.action.dto';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { FilterRoleAction } from './interface.role.action';
 import { ObjectId } from 'mongoose';
-
+import {ActionGuard} from '../../guards/actions.guard'
 @Controller('role-actions')
 export class RoleActionsController {
   constructor(private readonly roleActionsService: RoleActionService) {}
@@ -18,7 +18,8 @@ export class RoleActionsController {
   }
 
   @Get(':pageNumber')
-  filterByPage(@Param('pageNumber') pageNumber: number, @Query() query: FilterRoleAction, @Res() res: Response){
+  @UseGuards(ActionGuard)
+  filterByPage(@Param('pageNumber') pageNumber: number, @Query() query: FilterRoleAction, @Res() res: Response, @Req() req: Request){
     const {limit, ...filter} = query
     this.roleActionsService
     .getPageRoleAction(filter, limit, pageNumber)
