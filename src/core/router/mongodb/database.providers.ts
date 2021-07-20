@@ -3,6 +3,10 @@ import { url_mongo } from 'config/configuration';
 export const databaseProviders = [
   {
     provide: 'DATABASE_CONNECTION',
-    useFactory: (): Promise<typeof mongoose> => mongoose.connect(url_mongo),
+    useFactory: (): Promise<typeof mongoose> =>
+      mongoose.connect(url_mongo, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      }),
   },
 ];

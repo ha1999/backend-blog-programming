@@ -1,9 +1,6 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import { User } from '../users/user.entity';
+import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/user.service';
-import { pbkdf2Sync, timingSafeEqual } from 'crypto';
 import { JwtService } from '@nestjs/jwt';
-import { AuthData } from './auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -12,29 +9,36 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async validateUser({
-    email,
-    passwd,
-  }: AuthData): Promise<Omit<User, 'passwd' | 'salt'> | null> {
-    const user = await this.usersService.findByEmail(email);
-    const validPasswd = await this.checkPasswd(passwd, user.salt, user.passwd);
-    if (user && validPasswd) {
-      const { passwd, salt, ...result } = user;
-      return result;
-    }
-    return null;
-  }
-
-  async checkPasswd(passwd: string, salt: string, passwdHash: string) {
-    const encryptHash = pbkdf2Sync(passwd, salt, 10000, 512, 'sha512');
-    return timingSafeEqual(Buffer.from(passwdHash, 'base64'), encryptHash);
-  }
-
   generateToken(payload: Object): string {
     return this.jwtService.sign(payload);
   }
 
   verifyToken(token: string): { id: number; email: string; role: string } {
     return this.jwtService.verify(token);
+  }
+
+  async checkEmployee(email: string) {
+    return this.usersService
+      .findOneByEmail(email)
+      .then((user) => {
+        if(!user) return false
+        else return user.role !== 'anymous'
+      });
+  }
+
+  async checkUserExist(user: { email: string; name: string; picture: string }) {
+    return this.usersService.findByEmail(user.email).then((result) => {
+      if (result) return;
+      this.usersService
+        .create({
+          email: user.email,
+          name: user.name,
+          avatar: user.picture,
+          is_active: true,
+        })
+        .then(() => {
+          return;
+        });
+    });
   }
 }

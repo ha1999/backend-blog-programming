@@ -14,8 +14,9 @@ export const params = {
     authProviderX509CertUrl: serviceAccount.auth_provider_x509_cert_url,
     clientC509CertUrl: serviceAccount.client_x509_cert_url
 }
+export const client_id = process.env.CLIENT_ID
 export const port = process.env.PORT || 9000
-export const origin = process.env.ORIGIN || 'http://localhost:3009'
+export const origin = process.env.ORIGIN || 'http://localhost:3005'
 export const url_mongo = process.env.URL_MONGO || 'mongodb://localhost:27017/blog'
 export const type_orm_pg: TypeOrmModuleOptions = {
   type: "postgres",
