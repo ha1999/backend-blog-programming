@@ -5,6 +5,7 @@ import {
   IsNotEmpty,
   IsOptional,
 } from 'class-validator';
+
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
@@ -12,10 +13,6 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty()
-  passwd: string;
-
-  @IsOptional()
-  @IsString()
   name: string;
 
   @IsOptional()
