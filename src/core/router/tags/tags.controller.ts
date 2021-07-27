@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common'
 import { Response } from 'express'
-// import { Cron } from '@nestjs/schedule'
+import { Cron } from '@nestjs/schedule'
 import { Tag } from './tags.dto'
 import { TagsService } from './tags.service'
 
@@ -37,37 +37,37 @@ export class TagsController {
         return this.tagsService.bulkAddIdBlogToTag(id, tags)
     }
 
-    // @Cron('45 * * * * *')
-    // createFakeTags() {
-    //     this.tagsService.bulkCreateTags([
-    //         {
-    //             name: 'react',
-    //             listIdBlog: []
-    //         },
-    //         {
-    //             name: 'vue',
-    //             listIdBlog: []
-    //         },
-    //         {
-    //             name: 'js',
-    //             listIdBlog: []
-    //         },
-    //         {
-    //             name: 'nodejs',
-    //             listIdBlog: []
-    //         },
-    //         {
-    //             name: 'git',
-    //             listIdBlog: []
-    //         },
-    //         {
-    //             name: 'nestjs',
-    //             listIdBlog: []
-    //         },
+    @Cron('45 * * * * *')
+    createFakeTags() {
+        this.tagsService.bulkCreateTags([
+            {
+                name: 'react',
+                listIdBlog: []
+            },
+            {
+                name: 'vue',
+                listIdBlog: []
+            },
+            {
+                name: 'js',
+                listIdBlog: []
+            },
+            {
+                name: 'nodejs',
+                listIdBlog: []
+            },
+            {
+                name: 'git',
+                listIdBlog: []
+            },
+            {
+                name: 'nestjs',
+                listIdBlog: []
+            },
 
-    //     ])
-    //     .then(res => console.log('ok', res))
-    //     .catch(err => console.error(err))
-    // }
+        ])
+        .then(res => console.log('ok', res))
+        .catch(err => console.error(err))
+    }
 
 }
