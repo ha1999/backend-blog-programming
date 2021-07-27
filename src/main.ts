@@ -8,7 +8,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { port, origin } from 'config/configuration';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
-import { HttpExceptionFilter } from './core/exceptions/ http-exception.filter';
+import { HttpExceptionFilter } from './core/exceptions/http-exception.filter';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.use(cookieParser());

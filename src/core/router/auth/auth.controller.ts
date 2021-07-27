@@ -1,5 +1,6 @@
-import { Body, Controller, Post, Res, Req } from '@nestjs/common'
+import { Body, Controller, Post, Res, Req, BadGatewayException } from '@nestjs/common'
 import { Response } from 'express'
+import { Cookies } from 'src/core/decorators/cookie.decorator'
 import { verifyTokenGoogle } from 'src/utils/OAuth2Client'
 import { AuthService } from './auth.service'
 
@@ -12,18 +13,29 @@ export class AuthController {
     return { status: 'ok' }
   }
 
+  @Post('check-login')
+  async checkLogin(@Cookies('token') token: string, @Res({ passthrough: true }) res: Response){
+    try {
+      return this.authService.verifyToken(token)
+    } catch (err) {
+      res.status(403)
+      return err
+    }
+  }
+
   @Post('google-login-admin')
-  googleLoginAdmin(
+  async googleLoginAdmin(
     @Body('token') token: string,
     @Res() res: Response,
   ) {
-    verifyTokenGoogle(token)
-      .then((user) => {
-        this.authService.checkEmployee(user.email).then((isEmployee) => {
+    return verifyTokenGoogle(token)
+      .then(async (user) => {
+        return this.authService.checkEmployee(user.email).then((isEmployee) => {
           if (isEmployee) {
             const token = this.authService.generateToken(user)
             res.cookie('token', token, { httpOnly: true, secure: false })
             res.json({ auth: user })
+            return 
           } 
           else res.status(403).json({ error: "You have'nt in us system" })
         })
@@ -32,18 +44,20 @@ export class AuthController {
   }
 
   @Post('google-login-user')
-  googleLoginUser(
+  async googleLoginUser(
     @Body('token') token: string,
     @Res({ passthrough: true }) res: Response,
   ) {
-    verifyTokenGoogle(token)
-      .then((user) => {
-        this.authService.checkUserExist(user).then(() => {
-          const token = this.authService.generateToken(user)
-          res.cookie('token', token, { httpOnly: true, secure: false })
-          res.json({ auth: user })
-        })
-      })
-      .catch((error) => res.status(400).json({ error }))
+    return verifyTokenGoogle(token)
+    .then( user => this.authService.checkUserExist(user))
+    .then(resp => {
+      const token = this.authService.generateToken({name: resp.name, email: resp.email, avatar: resp.avatar})
+      res.cookie('token', token, { httpOnly: true, secure: false })
+      return {name: resp.name, email: resp.email, avatar: resp.avatar}
+    })
+    .catch(err => {
+      res.status(500)
+      return err
+    })
   }
 }

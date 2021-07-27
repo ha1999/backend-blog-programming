@@ -9,6 +9,8 @@ import { ActionHttpModule } from './core/router/action/action-http.module';
 import { ConfigModule } from '@nestjs/config';
 import { RoleActionHttpModule } from './core/router/role_action/role-action-http.module';
 import { AuthMiddleware } from './core/middlewares/auth.middleware';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TagsHttpModule } from './core/router/tags/tags-http.module';
 @Module({
   imports: [
     IoModule,
@@ -18,6 +20,8 @@ import { AuthMiddleware } from './core/middlewares/auth.middleware';
     BlogHttpModule,
     ActionHttpModule,
     RoleActionHttpModule,
+    TagsHttpModule,
+    ScheduleModule.forRoot(),
     ConfigModule.forRoot(),
   ],
   controllers: [AppController],
