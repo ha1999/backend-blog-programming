@@ -22,7 +22,8 @@ export class ActionGuard implements CanActivate {
     const action = this.reflector.get<number>('action', context.getHandler());
     if (!action) return true;
     const request = context.switchToHttp().getRequest() as RequestCustom;
-    const { role } = request.user;
+    // const { role } = request.user;
+    const role = 'abc'
     this.roleActionService
       .checkActionOfRole(role, action)
       .then((data) => (data === 1 ? true : false))

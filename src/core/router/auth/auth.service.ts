@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/user.service';
 import { JwtService } from '@nestjs/jwt';
+import { CreatEntityException } from 'src/core/exceptions/create.entity.error';
 
 @Injectable()
 export class AuthService {
@@ -13,7 +14,7 @@ export class AuthService {
     return this.jwtService.sign(payload);
   }
 
-  verifyToken(token: string): { id: number; email: string; role: string } {
+  verifyToken(token: string): { name: string; email: string; picture: string } {
     return this.jwtService.verify(token);
   }
 
@@ -27,18 +28,17 @@ export class AuthService {
   }
 
   async checkUserExist(user: { email: string; name: string; picture: string }) {
-    return this.usersService.findByEmail(user.email).then((result) => {
-      if (result) return;
-      this.usersService
-        .create({
-          email: user.email,
+    return this.usersService.findByEmail(user.email)
+    .then(result => {
+      if(!result) return this.usersService
+      .create({
+        email: user.email,
           name: user.name,
           avatar: user.picture,
           is_active: true,
-        })
-        .then(() => {
-          return;
-        });
-    });
+      })
+      else return result
+    })
+    .then(res => res)
   }
 }

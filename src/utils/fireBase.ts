@@ -22,6 +22,7 @@ class FireBase {
     fileUpload: Buffer,
     typeFile: string,
   ): Promise<string> {
+    console.log('filename', fileName, 'fileUpload', fileUpload, 'typefile', typeFile)
     const file = bucket.file(fileName);
     const token = uuid();
     const metadata = {

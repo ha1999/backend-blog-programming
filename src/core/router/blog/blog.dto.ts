@@ -1,21 +1,12 @@
 import {
   IsString,
-  IsInt,
-  IsBoolean,
-  IsNotEmpty,
-  IsOptional,
+  IsNotEmpty
 } from 'class-validator';
-export class CreateBlogDto {
-  @IsString()
-  @IsNotEmpty()
-  email: string;
 
+export class CreateBlogDtoBody {
   @IsString()
   @IsNotEmpty()
   title: string;
-
-  @IsString()
-  img: string;
 
   @IsString()
   overview: string;
@@ -25,6 +16,18 @@ export class CreateBlogDto {
 
   @IsString()
   tags: string;
+}
+
+
+
+export class CreateBlogDto extends CreateBlogDtoBody {
+  @IsString()
+  @IsNotEmpty()
+  email: string;
+
+  @IsString()
+  @IsNotEmpty()
+  img: string;
 }
 
 export class UpdateBlogDto {

@@ -8,7 +8,7 @@ export const databaseProviders = [
         type: 'postgres',
         url: process.env.DATABASE_URL_PG,
         entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-        synchronize: process.env.NODE_ENV === 'production',
+        synchronize: true, //production have to false --- auto create table if it is exist
         logging: true,
         // autoLoadEntities: true
       }),
