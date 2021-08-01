@@ -18,7 +18,7 @@ export class AuthController {
     try {
       return this.authService.verifyToken(token)
     } catch (err) {
-      res.status(403)
+      res.status(401)
       return err
     }
   }

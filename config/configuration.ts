@@ -26,6 +26,7 @@ export const type_orm_pg: TypeOrmModuleOptions = {
   logging: true,
   autoLoadEntities: true
   }
+export const transportMail = process.env.GMAIL_TRANSPORT
 
 
   

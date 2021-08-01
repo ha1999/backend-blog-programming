@@ -1,21 +1,30 @@
-import { BaseEntity } from 'src/utils/base.entity';
-import { Entity, Column } from 'typeorm';
+import { BaseEntity } from 'src/utils/base.entity'
+import { Entity, Column } from 'typeorm'
 @Entity('users')
 export class User extends BaseEntity {
   @Column({
     unique: true,
   })
-  email: string;
+  email: string
 
   @Column({ nullable: true, default: '' })
-  name: string;
+  name: string
 
   @Column({ nullable: true, default: '' })
-  avatar: string;
+  avatar: string
 
   @Column({ nullable: true, default: 'anymous' })
-  role: string;
+  role: string
+
+  @Column({ nullable: true, default: '' })
+  location: string
+
+  @Column({ nullable: true, default: '' })
+  work: string
+
+  @Column({ nullable: true, default: '' })
+  slogan: string
 
   @Column({ nullable: true, default: true })
-  is_active: boolean;
+  is_active: boolean
 }

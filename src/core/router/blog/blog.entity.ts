@@ -23,11 +23,14 @@ export class Blog extends BaseEntity {
   @Column({ nullable: true, default: 0 })
   view: number;
 
-  @Column({ nullable: true, default: '5-0' })
-  rate: string;
+  @Column({ nullable: true, default: 0 })
+  heart: number;
 
   @Column()
   tags: string;
+
+  @Column({ nullable: true, default: 0 })
+  save: number;
 
   @Column({ nullable: true, default: true })
   active: boolean;

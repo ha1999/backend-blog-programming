@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Res } from '@nestjs/common'
 import { Response } from 'express'
-// import { Cron } from '@nestjs/schedule'
+import { Cron } from '@nestjs/schedule'
 import { Tag } from './tags.dto'
 import { TagsService } from './tags.service'
 
@@ -68,6 +68,13 @@ export class TagsController {
     //     ])
     //     .then(res => console.log('ok', res))
     //     .catch(err => console.error(err))
+    // }
+
+    // @Cron('45 * * * * *')
+    // sendMail(){
+    //     this.tagsService.demoSendMail(['leha220699@gmail.com'])
+    //     .then(res => console.log(res))
+    //     .catch(err => console.log(err))
     // }
 
 }

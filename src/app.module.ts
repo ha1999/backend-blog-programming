@@ -28,6 +28,6 @@ import { TagsHttpModule } from './core/router/tags/tags-http.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).exclude('api/auth/(.*)').forRoutes('*');
+    // consumer.apply(AuthMiddleware).exclude('api/auth/(.*)').forRoutes('*');
   }
 }
