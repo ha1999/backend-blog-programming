@@ -2,11 +2,12 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Model, ObjectId } from 'mongoose';
 import { Tag } from './tags.dto';
 import { TagsDocument } from './tags.schema';
+import sendMailService from '../../../utils/sendMail'
 @Injectable()
 export class TagsService {
   constructor(
     @Inject('TAGS_MODEL')
-    private readonly tagsModel: Model<TagsDocument>,
+    private readonly tagsModel: Model<TagsDocument>
   ) {}
   getAllTags(){
       return this.tagsModel.find({})
@@ -45,7 +46,10 @@ export class TagsService {
     } finally {
       session.endSession();
     }
+  }
 
+  demoSendMail(emails: string[]) {
+    return sendMailService(emails)
   }
 
 }
