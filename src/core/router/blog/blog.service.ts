@@ -53,7 +53,7 @@ export class BlogService {
       where: {
         ...filter,
       },
-      skip: pageNumber,
+      skip: (pageNumber - 1) *(countTake ?? 10),
       take: countTake ?? 10,
     })
     const listBlog = listData.map(blog => ({
@@ -113,7 +113,7 @@ export class BlogService {
           active: true
         },
       ],
-      skip: page,
+      skip: (page -1) * take,
       take
     })
     const listBlog = listData.map(blog => ({
@@ -140,8 +140,8 @@ export class BlogService {
         'updatedAt',
       ],
       where: `search @@ to_tsquery('${text}')`,
-      take: 10,
-      skip: page
+      skip: (page - 1) * 10,
+      take: 10
       
     })
     const listBlog = listData.map(blog => ({

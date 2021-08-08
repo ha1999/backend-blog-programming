@@ -15,7 +15,7 @@ export class ActionsService {
   getPageAction(pageNumber: number, limit: number) {
     return this.actionsRepository.findAndCount({
       take: limit ?? 10,
-      skip: pageNumber - 1,
+      skip: (pageNumber - 1)*(limit ?? 10),
     });
   }
 
