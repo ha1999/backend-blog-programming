@@ -21,38 +21,33 @@ import { RequestCustom } from 'src/core/type.request.user';
 import { viToEn } from 'src/utils/viToEn';
 // import { params } from 'config/configuration';
 // import { Cron } from '@nestjs/schedule';
+
 @Controller('blogs')
 export class BlogsController {
   constructor(
-    private readonly blogService: BlogService) {}
+    private readonly blogService: BlogService) { }
 
   @Get(':pageNumber')
   async getAllByPage(
     @Query() query: QueryBlog,
     @Param('pageNumber') pageNumber: number,
-    @Res({passthrough: true}) res: Response,
+    @Res({ passthrough: true }) res: Response,
   ) {
     try {
       const { tags, email, take } = query;
-      const [listData, count] = await this.blogService.getPageBlog(
+      const [listBlog, count] = await this.blogService.getPageBlog(
         pageNumber,
         take,
         { tags, email },
       )
-      const listBlog = listData.map(blog => ({
-        ...blog,
-        email: blog.email.slice(0, blog.email.indexOf('@')),
-        updatedAt: blog.updatedAt.toString().slice(0, 10),
-        url: blog.email.slice(0, blog.email.indexOf('@')) + '/' + viToEn(blog.title) + '-' + blog.id 
-      }))
-      return {listBlog, count}
+      return { listBlog, count }
     } catch (error) {
       res.status(400).json({ error });
     }
   }
 
   @Get('blog-detail/:auth/:title')
-  async getDetailBlog(@Param() params: ParamGetDB, @Res({passthrough: true}) res: Response){
+  async getDetailBlog(@Param() params: ParamGetDB, @Res({ passthrough: true }) res: Response) {
     try {
       const blog = await this.blogService.getByIdAndTitle(params)
       return blog
@@ -60,33 +55,48 @@ export class BlogsController {
       res.status(500).json(error)
     }
   }
-  @Get('t/:tag')
-  async getByTag(@Param('tag') tag: string, @Res({passthrough: true}) res: Response){
+  @Get('t/:tag/:page')
+  async getByTag(
+    @Query('take') take: number,
+    @Param('tag') tag: string,
+    @Param('page') page: number,
+    @Res({ passthrough: true }) res: Response) {
     try {
-      const [listBlog, count] = await this.blogService.getBlogByTag(tag)
+      const [listBlog, count] = await this.blogService.getBlogByTag(tag, page, take)
       return {
         listBlog,
         count
       }
     } catch (error) {
-      res.status(500).json({error: error})
+      res.status(500).json({ error: error })
     }
+  }
+  @Get('search/full-text')
+  async getBlogBySearch(
+    @Query('search') search: string, 
+    @Query('page') page: number,
+    @Res({passthrough: true}) res: Response){
+      try {
+        const [listBlog, count] = await this.blogService.searchFullTextByTitle(search, page)
+        return {listBlog, count}
+      } catch (error) {
+        res.status(500).json({ error: error })
+      }
   }
 
 
   @Post()
   @UseInterceptors(FileInterceptor('img'))
   async createBlog(
-      @UploadedFile() file: Express.Multer.File,
-      @Body() blogCreate: CreateBlogDtoBody, 
-      @Req() req: RequestCustom,
-      @Res() res: Response) {
+    @UploadedFile() file: Express.Multer.File,
+    @Body() blogCreate: CreateBlogDtoBody,
+    @Req() req: RequestCustom,
+    @Res() res: Response) {
     try {
       const img = await FireBaseClass.uploadFileWithBuffer(file.originalname, file.buffer, file.mimetype)
-      const blog = await this.blogService.create({...blogCreate, img, email: req.user.email});
+      const blog = await this.blogService.create({ ...blogCreate, img, email: req.user.email });
       res.json({ blog });
     } catch (error) {
-      console.log('error create blog', error.message, error);
       res.status(500).json({ error });
     }
   }

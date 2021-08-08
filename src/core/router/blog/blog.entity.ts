@@ -1,5 +1,5 @@
 import { BaseEntity } from 'src/utils/base.entity';
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, Index } from 'typeorm';
 
 @Entity('blogs')
 export class Blog extends BaseEntity {
@@ -11,6 +11,10 @@ export class Blog extends BaseEntity {
   })
   title: string;
 
+  @Index('search-full-tex', { fulltext: true })
+  @Column({default: ''})
+  search: string
+
   @Column()
   img: string;
 
@@ -20,17 +24,8 @@ export class Blog extends BaseEntity {
   @Column()
   content: string;
 
-  @Column({ nullable: true, default: 0 })
-  view: number;
-
-  @Column({ nullable: true, default: 0 })
-  heart: number;
-
   @Column()
   tags: string;
-
-  @Column({ nullable: true, default: 0 })
-  save: number;
 
   @Column({ nullable: true, default: true })
   active: boolean;

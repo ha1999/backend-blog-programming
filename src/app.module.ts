@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { IoModule } from './websocket/io.module';
 import { UserHttpModule } from './core/router/users/users-http.module';
@@ -11,6 +11,7 @@ import { RoleActionHttpModule } from './core/router/role_action/role-action-http
 import { AuthMiddleware } from './core/middlewares/auth.middleware';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TagsHttpModule } from './core/router/tags/tags-http.module';
+import { DetailBlogHttpModule } from './core/router/detail_blog/detail.blog-http.module';
 @Module({
   imports: [
     IoModule,
@@ -21,6 +22,7 @@ import { TagsHttpModule } from './core/router/tags/tags-http.module';
     ActionHttpModule,
     RoleActionHttpModule,
     TagsHttpModule,
+    DetailBlogHttpModule,
     ScheduleModule.forRoot(),
     ConfigModule.forRoot(),
   ],
@@ -28,6 +30,13 @@ import { TagsHttpModule } from './core/router/tags/tags-http.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    // consumer.apply(AuthMiddleware).exclude('api/auth/(.*)').forRoutes('*');
+    consumer
+    .apply(AuthMiddleware)
+    .exclude('api/auth/(.*)')
+    .forRoutes(
+      {path: '*', method: RequestMethod.POST},
+      {path: '*', method: RequestMethod.PUT},
+      {path: '*', method: RequestMethod.DELETE}
+    );
   }
 }
