@@ -16,7 +16,7 @@ export const params = {
 }
 export const client_id = process.env.CLIENT_ID
 export const port = process.env.PORT || 9000
-export const origin = process.env.ORIGIN || 'http://localhost:3005'
+export const origin = process.env.ORIGIN?.split(',') || ['http://192.168.1.3:3005', 'http://localhost:3005']
 export const url_mongo = process.env.URL_MONGO || 'mongodb://localhost:27017/blog'
 export const type_orm_pg: TypeOrmModuleOptions = {
   type: "postgres",

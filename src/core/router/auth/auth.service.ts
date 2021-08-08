@@ -14,7 +14,7 @@ export class AuthService {
     return this.jwtService.sign(payload);
   }
 
-  verifyToken(token: string): { name: string; email: string; picture: string } {
+  verifyToken(token: string): { id: number, name: string; email: string; picture: string } {
     return this.jwtService.verify(token);
   }
 
@@ -23,7 +23,7 @@ export class AuthService {
       .findOneByEmail(email)
       .then((user) => {
         if(!user) return false
-        else return user.role !== 'anymous'
+        else return user.id
       });
   }
 

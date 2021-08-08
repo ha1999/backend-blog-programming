@@ -32,7 +32,7 @@ export class AuthController {
       .then(async (user) => {
         return this.authService.checkEmployee(user.email).then((isEmployee) => {
           if (isEmployee) {
-            const token = this.authService.generateToken(user)
+            const token = this.authService.generateToken({...user, id: isEmployee})
             res.cookie('token', token, { httpOnly: true, secure: false })
             res.json({ auth: user })
             return 
@@ -51,7 +51,7 @@ export class AuthController {
     return verifyTokenGoogle(token)
     .then( user => this.authService.checkUserExist(user))
     .then(resp => {
-      const token = this.authService.generateToken({name: resp.name, email: resp.email, avatar: resp.avatar})
+      const token = this.authService.generateToken({id:resp.id , name: resp.name, email: resp.email, avatar: resp.avatar})
       res.cookie('token', token, { httpOnly: true, secure: false })
       return {name: resp.name, email: resp.email, avatar: resp.avatar}
     })

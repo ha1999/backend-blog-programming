@@ -4,6 +4,7 @@ export interface RequestCustom extends Request {
 }
 
 export interface DataToken {
+  id: number
   name: string;
   picture: string;
   email: string;
