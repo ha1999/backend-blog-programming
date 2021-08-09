@@ -12,7 +12,7 @@ export class Blog extends BaseEntity {
   title: string;
 
   @Index('search-full-tex', { fulltext: true })
-  @Column({default: ''})
+  @Column({type: 'tsvector'})
   search: string
 
   @Column()

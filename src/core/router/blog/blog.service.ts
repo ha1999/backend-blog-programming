@@ -125,8 +125,6 @@ export class BlogService {
     return [listBlog, count]
   }
 
-
-
   async searchFullTextByTitle(textSearch: string, page: number){
     const text = textSearch.split(' ').join(' | ')
     const [listData, count] = await this.blogsRepository.findAndCount({
@@ -140,7 +138,7 @@ export class BlogService {
         'updatedAt',
       ],
       where: `search @@ to_tsquery('${text}')`,
-      skip: (page - 1) * 10,
+      skip: (page -1) * 10,
       take: 10
       
     })
