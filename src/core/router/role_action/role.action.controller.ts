@@ -17,6 +17,7 @@ import { FilterRoleAction } from './interface.role.action';
 import { ObjectId } from 'mongoose';
 import { ActionGuard } from '../../guards/actions.guard';
 import { RequestCustom } from 'src/core/type.request.user';
+import { handlerError } from 'src/utils/handError';
 @Controller('role-actions')
 export class RoleActionsController {
   constructor(private readonly roleActionsService: RoleActionService) {}
@@ -29,7 +30,7 @@ export class RoleActionsController {
     this.roleActionsService
       .bulkCreate(createRoleActionDto)
       .then((roleActions) => res.json({ roleActions }))
-      .catch((error) => res.status(400).json({ error }));
+      .catch((error) => handlerError(error));
   }
 
   @Get(':pageNumber')
@@ -44,7 +45,7 @@ export class RoleActionsController {
     this.roleActionsService
       .getPageRoleAction(filter, limit, pageNumber)
       .then((roleActions) => res.json({ roleActions }))
-      .catch((error) => res.status(400).json({ error }));
+      .catch((error) => handlerError(error));
   }
 
   @Put('active/:objectId')
@@ -52,7 +53,7 @@ export class RoleActionsController {
     this.roleActionsService
       .updateActiveById(_id, true)
       .then((roleAction) => res.json({ roleAction }))
-      .catch((error) => res.status(400).json({ error }));
+      .catch((error) => handlerError(error));
   }
 
   @Put('in-active/:objectId')
@@ -60,6 +61,6 @@ export class RoleActionsController {
     this.roleActionsService
       .updateActiveById(_id, false)
       .then((roleAction) => res.json({ roleAction }))
-      .catch((error) => res.status(400).json({ error }));
+      .catch((error) => handlerError(error));
   }
 }

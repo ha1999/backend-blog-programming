@@ -2,6 +2,7 @@ import { Controller, Get, Param, Post, Req, Res } from "@nestjs/common";
 import { DetailBlogService } from "./detail.blog.service";
 import {Response} from 'express'
 import { RequestCustom } from "src/core/type.request.user";
+import { handlerError } from "src/utils/handError";
 
 
 @Controller('blog-detail-info')
@@ -17,7 +18,7 @@ export class BlogDetailController{
             const data = await this.blogDetailService.getDetailBlogById(blog_id)
             return data
         } catch (error){
-            res.status(500).json(error)
+            handlerError(error)
         }
     }
 
@@ -28,7 +29,7 @@ export class BlogDetailController{
             const data = await this.blogDetailService.heartToBlog(user_id, blog_id)
             return data
         } catch (error) {
-            res.status(500).json(error)
+            handlerError(error)
         }
     }
 
@@ -39,7 +40,7 @@ export class BlogDetailController{
             const data = await this.blogDetailService.saveToBlog(user_id, blog_id)
             return data
         } catch (error) {
-            res.status(500).json(error)
+            handlerError(error)
         }
     }
 

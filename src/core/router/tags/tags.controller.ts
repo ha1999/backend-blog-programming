@@ -3,6 +3,7 @@ import { Response } from 'express'
 import { Cron } from '@nestjs/schedule'
 import { Tag } from './tags.dto'
 import { TagsService } from './tags.service'
+import { handlerError } from 'src/utils/handError'
 
 @Controller('tags')
 
@@ -17,24 +18,38 @@ export class TagsController {
             return data.map(tag => tag.name)
         })
         .catch(err => {
-            res.status(500)
-            return err
+            handlerError(err)
         })
     }
 
     @Get(':tag')
     getAllIdBlogOfTag(@Param('tag') tag: string) {
-        return this.tagsService.getIdBlogByTag(tag)
+        try {
+            return this.tagsService.getIdBlogByTag(tag)
+        } catch (error) {
+            handlerError(error)
+        }
+        
     }
 
     @Post()
     createTag(@Body() tag: Tag) {
-        return this.tagsService.createTag(tag)
+        try {
+            return this.tagsService.createTag(tag)
+        } catch (error) {
+            handlerError(error)
+        }
+        
     }
 
     @Post(':id')
     createTagOfBlog(@Param('id') id: number, @Body() tags: string[]) {
-        return this.tagsService.bulkAddIdBlogToTag(id, tags)
+        try {
+            return this.tagsService.bulkAddIdBlogToTag(id, tags)
+        } catch (error) {
+            handlerError(error)
+        }
+        
     }
 
     // @Cron('45 * * * * *')

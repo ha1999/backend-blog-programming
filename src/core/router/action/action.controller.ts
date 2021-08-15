@@ -17,6 +17,7 @@ import { Action } from '../../decorators/action.decorator';
 import { ActionGuard } from 'src/core/guards/actions.guard';
 import { User } from 'src/core/decorators/user.decorator';
 import { DataToken } from 'src/core/type.request.user';
+import { handlerError } from 'src/utils/handError';
 @Controller('actions')
 export class ActionController {
   constructor(private readonly actionService: ActionsService) {}
@@ -30,11 +31,10 @@ export class ActionController {
     @Res() res: Response,
     @User() user: DataToken,
   ) {
-    console.log(user, 'user-decoratoter');
     this.actionService
       .getPageAction(page, limit)
       .then((actions) => res.json({ actions }))
-      .catch((error) => res.status(400).json({ error }));
+      .catch((error) => handlerError(error));
   }
 
   @Post('bulk')
@@ -42,7 +42,7 @@ export class ActionController {
     this.actionService
       .bulkCreateActions(actions)
       .then((actions) => res.json({ actions }))
-      .catch((error) => res.status(400).json({ error }));
+      .catch((error) => handlerError(error));
   }
 
   @Post()
@@ -50,7 +50,7 @@ export class ActionController {
     this.actionService
       .createAction(action)
       .then((action) => res.json({ action }))
-      .catch((error) => res.status(400).json({ error }));
+      .catch((error) => handlerError(error));
   }
 
   @Put(':id')
@@ -58,7 +58,7 @@ export class ActionController {
     this.actionService
       .updateAction(action)
       .then((action) => res.json({ action }))
-      .catch((error) => res.status(400).json({ error }));
+      .catch((error) => handlerError(error));
   }
 
   @Delete(':id')
@@ -66,7 +66,7 @@ export class ActionController {
     this.actionService
       .deleteAction(id)
       .then((action) => res.json({ action }))
-      .catch((error) => res.status(400).json({ error }));
+      .catch((error) => handlerError(error));
   }
 
   @Put('active/:id')
@@ -78,6 +78,6 @@ export class ActionController {
     this.actionService
       .updateActive(id, active.active)
       .then((action) => res.json({ action }))
-      .catch((error) => res.status(400).json({ error }));
+      .catch((error) => handlerError(error));
   }
 }
