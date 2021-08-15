@@ -1,6 +1,7 @@
 import { Body, Controller, Post, Res, Req, BadGatewayException } from '@nestjs/common'
 import { Response } from 'express'
 import { Cookies } from 'src/core/decorators/cookie.decorator'
+import { handlerError } from 'src/utils/handError'
 import { verifyTokenGoogle } from 'src/utils/OAuth2Client'
 import { AuthService } from './auth.service'
 
@@ -18,8 +19,7 @@ export class AuthController {
     try {
       return this.authService.verifyToken(token)
     } catch (err) {
-      res.status(401)
-      return err
+      handlerError(err)
     }
   }
 
@@ -40,7 +40,7 @@ export class AuthController {
           else res.status(403).json({ error: "You have'nt in us system" })
         })
       })
-      .catch((error) => res.status(400).json({ error }))
+      .catch((error) =>  handlerError(error))
   }
 
   @Post('google-login-user')
@@ -56,8 +56,7 @@ export class AuthController {
       return {name: resp.name, email: resp.email, avatar: resp.avatar}
     })
     .catch(err => {
-      res.status(500)
-      return err
+      handlerError(err)
     })
   }
 }

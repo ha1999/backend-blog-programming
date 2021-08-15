@@ -19,6 +19,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import FireBaseClass from '../../../utils/fireBase';
 import { RequestCustom } from 'src/core/type.request.user';
 import { viToEn } from 'src/utils/viToEn';
+import { handlerError } from 'src/utils/handError';
 // import { params } from 'config/configuration';
 // import { Cron } from '@nestjs/schedule';
 
@@ -42,7 +43,7 @@ export class BlogsController {
       )
       return { listBlog, count }
     } catch (error) {
-      res.status(400).json({ error });
+      handlerError(error)
     }
   }
 
@@ -52,7 +53,7 @@ export class BlogsController {
       const blog = await this.blogService.getByIdAndTitle(params)
       return blog
     } catch (error) {
-      res.status(500).json(error)
+      handlerError(error)
     }
   }
   @Get('t/:tag/:page')
@@ -68,7 +69,7 @@ export class BlogsController {
         count
       }
     } catch (error) {
-      res.status(500).json({ error: error })
+      handlerError(error)
     }
   }
   @Get('search/full-text')
@@ -80,7 +81,7 @@ export class BlogsController {
         const [listBlog, count] = await this.blogService.searchFullTextByTitle(search, page)
         return {listBlog, count}
       } catch (error) {
-        res.status(500).json({ error: error })
+        handlerError(error)
       }
   }
 
@@ -97,7 +98,7 @@ export class BlogsController {
       const blog = await this.blogService.create({ ...blogCreate, img, email: req.user.email });
       res.json({ blog });
     } catch (error) {
-      res.status(500).json({ error });
+      handlerError(error)
     }
   }
 
@@ -111,8 +112,7 @@ export class BlogsController {
       const blog = await this.blogService.update(id, updateBlogDto);
       res.json({ blog });
     } catch (error) {
-      console.log('error update blog', error.message);
-      res.status(400).json({ error });
+      handlerError(error)
     }
   }
 
