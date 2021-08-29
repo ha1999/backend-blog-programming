@@ -6,7 +6,6 @@ import {
   Delete,
   Res,
   Body,
-  HttpException,
   Param,
   Req,
 } from '@nestjs/common';
@@ -14,6 +13,8 @@ import { Response, Request } from 'express';
 import { UsersService } from './user.service';
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { handlerError } from 'src/utils/handError';
+import { RequestCustom } from 'src/core/type.request.user';
+import { UnauthorizedException } from '@nestjs/common';
 
 @Controller('users')
 export class UserController {
@@ -27,44 +28,55 @@ export class UserController {
       handlerError(error)
     }
   }
+
+  @Get('profile')
+  async profileUser(
+    @Req() req: RequestCustom
+  ) {
+    try {
+      const data = await this.userService.findOne(req.user.id.toString());
+      return data
+    } catch (error) {
+      throw new UnauthorizedException()
+    }
+  }
+
   @Get(':id')
   async getById(
     @Param('id') id: string,
-    @Res() res: Response,
     @Req() req: Request,
   ) {
     try {
-      console.log('cookie is', req.cookies['token']);
       const data = await this.userService.findOne(id);
-      res.json({ data: data });
+      return data
     } catch (error) {
       handlerError(error)
     }
   }
   @Post()
-  async createUser(@Body() userCreate: CreateUserDto, @Res() res: Response) {
+  async createUser(@Body() userCreate: CreateUserDto) {
     try {
       const result = await this.userService.create(userCreate);
-      res.json({ data: result });
+      return result
     } catch (error) {
       handlerError(error)
     }
   }
   @Put()
-  async updateUser(@Body() userUpdate: UpdateUserDto, @Res() res: Response) {
+  async updateUser(@Body() userUpdate: UpdateUserDto) {
     try {
       const result = await this.userService.updateOne(userUpdate);
-      res.json({ data: result });
+      return result
     } catch (error) {
       handlerError(error)
     }
   }
 
   @Delete(':id')
-  async deleteUser(@Param('id') id: string, @Res() res: Response) {
+  async deleteUser(@Param('id') id: string) {
     try {
       const result = await this.userService.remove(id);
-      res.json({ data: result });
+      return result
     } catch (error) {
       handlerError(error)
     }

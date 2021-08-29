@@ -151,4 +151,25 @@ export class BlogService {
     return [listBlog, count]
   }
 
+  async getPageBlogOfUser(email: string, page: number){
+    const [listData, count] = await this.blogsRepository.findAndCount({
+      select: [
+        'id',
+        'title',
+        'email',
+        'img',
+        'overview',
+        'tags',
+        'updatedAt',
+      ],
+      where: {
+        email
+      },
+      skip: (page -1) * 10,
+      take: 10
+      
+    })
+    return [listData, count]
+  }
+
 }

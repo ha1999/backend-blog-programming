@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UsersService } from '../users/user.service';
 import { JwtService } from '@nestjs/jwt';
-import { CreatEntityException } from 'src/core/exceptions/create.entity.error';
 
 @Injectable()
 export class AuthService {

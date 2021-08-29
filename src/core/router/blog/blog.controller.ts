@@ -74,15 +74,15 @@ export class BlogsController {
   }
   @Get('search/full-text')
   async getBlogBySearch(
-    @Query('search') search: string, 
+    @Query('search') search: string,
     @Query('page') page: number,
-    @Res({passthrough: true}) res: Response){
-      try {
-        const [listBlog, count] = await this.blogService.searchFullTextByTitle(search, page)
-        return {listBlog, count}
-      } catch (error) {
-        handlerError(error)
-      }
+    @Res({ passthrough: true }) res: Response) {
+    try {
+      const [listBlog, count] = await this.blogService.searchFullTextByTitle(search, page)
+      return { listBlog, count }
+    } catch (error) {
+      handlerError(error)
+    }
   }
 
 
@@ -115,13 +115,19 @@ export class BlogsController {
       handlerError(error)
     }
   }
-
-
-
-  // @Cron('45 * * * * *')
-  // async batchAddBlogToTag(){
-  //   await this.blogService.addBlogToTag()
-  //   console.log('ok')
-  // }
-
+  @Get('member/blog')
+  async getPageBlogOfUser(
+    @Query('email') email: string,
+    @Query('page') page: number
+  ) {
+      try {
+        const [listBlog, count] = await this.blogService.getPageBlogOfUser(email, page)
+        return {
+          listBlog,
+          count
+        }
+      } catch (error) {
+        handlerError(error)
+      }
+  }
 }

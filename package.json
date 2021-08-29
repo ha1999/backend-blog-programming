@@ -29,6 +29,7 @@
     "@nestjs/platform-express": "^7.6.15",
     "@nestjs/platform-socket.io": "^7.6.17",
     "@nestjs/schedule": "^1.0.0",
+    "@nestjs/swagger": "^4.8.2",
     "@nestjs/typeorm": "^7.1.5",
     "@nestjs/websockets": "^7.6.17",
     "@types/nodemailer": "^6.4.4",
@@ -51,6 +52,7 @@
     "rxjs": "^6.6.6",
     "sharp": "^0.28.3",
     "socket.io": "^4.1.2",
+    "swagger-ui-express": "^4.1.6",
     "typeorm": "^0.2.34",
     "uuid": "^8.3.2"
   },
