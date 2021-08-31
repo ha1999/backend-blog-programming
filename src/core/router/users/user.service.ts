@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DeleteResult, Repository } from 'typeorm';
-import { CreateUserDto, UpdateUserDto } from './user.dto';
+import { CreateUserDto, CreateUserDtoGH, UpdateUserDto } from './user.dto';
 import { User } from './user.entity';
 import { UserResponse } from './user.response';
 @Injectable()
@@ -14,6 +14,13 @@ export class UsersService {
     Object.assign(user, createUserDto);
     return this.usersRepository.save(user);
   }
+
+  async createGH(createUserDto: CreateUserDtoGH): Promise<User> {
+    const user = new User();
+    Object.assign(user, createUserDto);
+    return this.usersRepository.save(user);
+  }
+
   findAll(): Promise<UserResponse[]> {
     return this.usersRepository.find({
       select: ['id', 'email', 'name', 'avatar', 'is_active'],

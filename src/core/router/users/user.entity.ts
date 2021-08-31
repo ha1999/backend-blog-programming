@@ -25,6 +25,9 @@ export class User extends BaseEntity {
   @Column({ nullable: true, default: '' })
   slogan: string
 
+  @Column({ nullable: true, default: '' })
+  github: string
+
   @Column({ nullable: true, default: true })
   is_active: boolean
 }
