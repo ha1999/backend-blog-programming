@@ -59,4 +59,20 @@ export class AuthController {
       handlerError(err)
     })
   }
+
+  @Post('github-login')
+  async gitHubLogin(
+    @Body('code') code: string,
+    @Res({passthrough:true}) res: Response
+  ){
+    try {
+      const resp = await this.authService.serviceLoginGitHub(code)
+      const token = this.authService.generateToken({id:resp.id , name: resp.name, email: resp.email, avatar: resp.avatar})
+      res.cookie('token', token, { httpOnly: true, secure: false })
+      return {name: resp.name, email: resp.email, avatar: resp.avatar}
+    } catch (error) {
+      console.log(error)
+      handlerError(error)
+    }
+  }
 }

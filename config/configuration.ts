@@ -28,5 +28,9 @@ export const type_orm_pg: TypeOrmModuleOptions = {
   }
 export const transportMail = process.env.GMAIL_TRANSPORT
 
+export const githubSecrets = process.env.GITHUB_SECRETS
+
+export const githubId = process.env.GITHUB_ID
+
 
   
