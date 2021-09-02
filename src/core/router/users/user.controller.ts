@@ -20,10 +20,10 @@ import { UnauthorizedException } from '@nestjs/common';
 export class UserController {
   constructor(private readonly userService: UsersService) {}
   @Get()
-  async getAllUser(@Res() res: Response) {
+  async getAllUser() {
     try {
       const data = await this.userService.findAll();
-      res.json({ data: data });
+      return data
     } catch (error) {
       handlerError(error)
     }
@@ -37,14 +37,13 @@ export class UserController {
       const data = await this.userService.findOne(req.user.id.toString());
       return data
     } catch (error) {
-      throw new UnauthorizedException()
+      handlerError(error)
     }
   }
 
   @Get(':id')
   async getById(
-    @Param('id') id: string,
-    @Req() req: Request,
+    @Param('id') id: string
   ) {
     try {
       const data = await this.userService.findOne(id);

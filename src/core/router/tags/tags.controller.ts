@@ -51,45 +51,4 @@ export class TagsController {
         }
         
     }
-
-    // @Cron('45 * * * * *')
-    // createFakeTags() {
-    //     this.tagsService.bulkCreateTags([
-    //         {
-    //             name: 'react',
-    //             listIdBlog: []
-    //         },
-    //         {
-    //             name: 'vue',
-    //             listIdBlog: []
-    //         },
-    //         {
-    //             name: 'js',
-    //             listIdBlog: []
-    //         },
-    //         {
-    //             name: 'nodejs',
-    //             listIdBlog: []
-    //         },
-    //         {
-    //             name: 'git',
-    //             listIdBlog: []
-    //         },
-    //         {
-    //             name: 'nestjs',
-    //             listIdBlog: []
-    //         },
-
-    //     ])
-    //     .then(res => console.log('ok', res))
-    //     .catch(err => console.error(err))
-    // }
-
-    // @Cron('45 * * * * *')
-    // sendMail(){
-    //     this.tagsService.demoSendMail(['leha220699@gmail.com'])
-    //     .then(res => console.log(res))
-    //     .catch(err => console.log(err))
-    // }
-
 }

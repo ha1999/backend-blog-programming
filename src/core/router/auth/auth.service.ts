@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { UsersService } from '../users/user.service'
 import { JwtService } from '@nestjs/jwt'
-import { githubSecrets, githubId } from '../../../../config/configuration'
 import { HttpService } from '@nestjs/axios'
 import { CreateUserDtoGH } from '../users/user.dto'
 import { User } from '../users/user.entity'
@@ -23,37 +22,32 @@ export class AuthService {
   }
 
   async checkEmployee(email: string) {
-    return this.usersService
-      .findOneByEmail(email)
-      .then((user) => {
-        if (!user) return false
-        else return user.id
-      })
+    const user = await this.usersService.findOneByEmail(email)
+    if (!user) return false
+    else return user.id
   }
 
-  async checkUserExist(user: { email: string, name: string, picture: string }) {
-    return this.usersService.findByEmail(user.email)
-      .then(result => {
-        if (!result) return this.usersService
-          .create({
-            email: user.email,
-            name: user.name,
-            avatar: user.picture,
-            is_active: true,
-          })
-        else return result
+  async checkUserLoginWithGG(user: { email: string, name: string, picture: string }) {
+    const userCheck = await this.usersService.findByEmail(user.email)
+    if (userCheck) return userCheck
+    else {
+      const userCreate = await this.usersService.create({
+        email: user.email,
+        name: user.name,
+        avatar: user.picture,
+        is_active: true,
       })
-      .then(res => res)
+      return userCreate
+    }
   }
 
-  async checkUserExistGH(user: CreateUserDtoGH) {
-    return this.usersService.findByEmail(user.email)
-      .then(result => {
-        if (!result) return this.usersService
-          .createGH(user)
-        else return result
-      })
-      .then(res => res)
+  async checkUserLoginWithGH(user: CreateUserDtoGH) {
+    const userCheck = await this.usersService.findByEmail(user.email)
+    if (userCheck) return userCheck
+    else {
+      const userCreate = await this.usersService.createGH(user)
+      return userCreate
+    }
   }
 
   async serviceLoginGitHub(code: string): Promise<User> {
@@ -89,7 +83,7 @@ export class AuthService {
       work: company,
       github: html_url
     }
-    const checkUser = await this.checkUserExistGH(userData as CreateUserDtoGH)
+    const checkUser = await this.checkUserLoginWithGH(userData as CreateUserDtoGH)
     return checkUser
   }
 

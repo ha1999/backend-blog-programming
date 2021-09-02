@@ -18,7 +18,7 @@ export class AuthMiddleware implements NestMiddleware {
       next()
     } catch (error) {
       throw new UnauthorizedException(
-        `Unauthorized! Because token is ${error.message}`,
+        'Unauthorized! Invalid token',
       )
     }
   }
