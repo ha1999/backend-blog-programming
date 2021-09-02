@@ -8,6 +8,7 @@ import { AuthService } from './auth.service'
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
+
   @Post('logout')
   logout(@Res({ passthrough: true }) res: Response) {
     res.cookie('token', '')
@@ -45,19 +46,18 @@ export class AuthController {
 
   @Post('google-login-user')
   async googleLoginUser(
-    @Body('token') token: string,
+    @Body('token') tokenGG: string,
     @Res({ passthrough: true }) res: Response,
   ) {
-    return verifyTokenGoogle(token)
-    .then( user => this.authService.checkUserExist(user))
-    .then(resp => {
+    try {
+      const user = await verifyTokenGoogle(tokenGG)
+      const resp = await this.authService.checkUserLoginWithGG(user)
       const token = this.authService.generateToken({id:resp.id , name: resp.name, email: resp.email, avatar: resp.avatar})
       res.cookie('token', token, { httpOnly: true, secure: false })
       return {name: resp.name, email: resp.email, avatar: resp.avatar}
-    })
-    .catch(err => {
-      handlerError(err)
-    })
+    } catch (error) {
+      handlerError(error)
+    }
   }
 
   @Post('github-login')
@@ -71,7 +71,6 @@ export class AuthController {
       res.cookie('token', token, { httpOnly: true, secure: false })
       return {name: resp.name, email: resp.email, avatar: resp.avatar}
     } catch (error) {
-      console.log(error)
       handlerError(error)
     }
   }

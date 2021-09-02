@@ -23,44 +23,61 @@ export class RoleActionsController {
   constructor(private readonly roleActionsService: RoleActionService) {}
 
   @Post()
-  create(
+  async create(
     @Body() createRoleActionDto: CreateRoleActionDto[],
-    @Res() res: Response,
+    @Res({passthrough: true}) res: Response,
   ) {
-    this.roleActionsService
-      .bulkCreate(createRoleActionDto)
-      .then((roleActions) => res.json({ roleActions }))
-      .catch((error) => handlerError(error));
+    try {
+      const data = await this.roleActionsService.bulkCreate(createRoleActionDto)
+      return data
+    } catch (error) {
+      handlerError(error)
+    }
   }
 
   @Get(':pageNumber')
   @UseGuards(ActionGuard)
-  filterByPage(
+  async filterByPage(
     @Param('pageNumber') pageNumber: number,
     @Query() query: FilterRoleAction,
-    @Res() res: Response,
+    @Res({passthrough: true}) res: Response,
     @Req() req: RequestCustom,
   ) {
     const { limit, ...filter } = query;
-    this.roleActionsService
+    try {
+      const data = await this.roleActionsService
       .getPageRoleAction(filter, limit, pageNumber)
-      .then((roleActions) => res.json({ roleActions }))
-      .catch((error) => handlerError(error));
+      return data
+    } catch (error) {
+      handlerError(error)
+    }
   }
 
   @Put('active/:objectId')
-  activeRoleAction(@Param('objectId') _id: ObjectId, @Res() res: Response) {
-    this.roleActionsService
-      .updateActiveById(_id, true)
-      .then((roleAction) => res.json({ roleAction }))
-      .catch((error) => handlerError(error));
+  async activeRoleAction(
+    @Param('objectId') _id: ObjectId, 
+    @Res({passthrough: true}) res: Response
+    ) {
+      try {
+        const data = await  this.roleActionsService
+        .updateActiveById(_id, true)
+        return data
+      } catch (error) {
+        handlerError(error)
+      }
   }
 
   @Put('in-active/:objectId')
-  inActiveRoleAction(@Param('objectId') _id: ObjectId, @Res() res: Response) {
-    this.roleActionsService
+  async inActiveRoleAction(
+    @Param('objectId') _id: ObjectId, 
+    @Res({passthrough: true}) res: Response
+  ) {
+    try {
+      const data = await this.roleActionsService
       .updateActiveById(_id, false)
-      .then((roleAction) => res.json({ roleAction }))
-      .catch((error) => handlerError(error));
+      return data
+    } catch (error) {
+      handlerError(error)
+    }
   }
 }

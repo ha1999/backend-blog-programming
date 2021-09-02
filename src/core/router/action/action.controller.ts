@@ -9,15 +9,13 @@ import {
   Put,
   Delete,
   UseGuards,
-} from '@nestjs/common';
-import { Response } from 'express';
-import { CreateActionDto, UpdateActionDto } from './action.dto';
-import { ActionsService } from './action.service';
-import { Action } from '../../decorators/action.decorator';
-import { ActionGuard } from 'src/core/guards/actions.guard';
-import { User } from 'src/core/decorators/user.decorator';
-import { DataToken } from 'src/core/type.request.user';
-import { handlerError } from 'src/utils/handError';
+} from '@nestjs/common'
+import { Response } from 'express'
+import { CreateActionDto, UpdateActionDto } from './action.dto'
+import { ActionsService } from './action.service'
+import { Action } from '../../decorators/action.decorator'
+import { ActionGuard } from 'src/core/guards/actions.guard'
+import { handlerError } from 'src/utils/handError'
 @Controller('actions')
 export class ActionController {
   constructor(private readonly actionService: ActionsService) {}
@@ -25,59 +23,70 @@ export class ActionController {
   @Get(':pageNumber')
   @Action('GET_ALL_ACTION')
   @UseGuards(ActionGuard)
-  getPageActions(
+  async getPageActions(
     @Param('pageNumber') page: number,
     @Query('limit') limit: number,
-    @Res() res: Response,
-    @User() user: DataToken,
+    @Res({passthrough: true}) res: Response
   ) {
-    this.actionService
-      .getPageAction(page, limit)
-      .then((actions) => res.json({ actions }))
-      .catch((error) => handlerError(error));
+    try {
+      const data = await this.actionService.getPageAction(page, limit)
+      return data
+    } catch (error) {
+      handlerError(error)
+    }
   }
 
   @Post('bulk')
-  bulkCreateAction(@Body() actions: CreateActionDto[], @Res() res: Response) {
-    this.actionService
-      .bulkCreateActions(actions)
-      .then((actions) => res.json({ actions }))
-      .catch((error) => handlerError(error));
+  async bulkCreateAction(@Body() actions: CreateActionDto[], @Res({passthrough: true}) res: Response) {
+    try {
+      const data = await this.actionService.bulkCreateActions(actions)
+      return data
+    } catch (error) {
+      handlerError(error)
+    }
   }
 
   @Post()
-  createAction(@Body() action: CreateActionDto, @Res() res: Response) {
-    this.actionService
-      .createAction(action)
-      .then((action) => res.json({ action }))
-      .catch((error) => handlerError(error));
+  async createAction(@Body() action: CreateActionDto, @Res({passthrough: true}) res: Response) {
+    try {
+      const data = await this.actionService.createAction(action)
+      return data
+    } catch (error) {
+      handlerError(error)
+    }
   }
 
   @Put(':id')
-  updateAction(@Body() action: UpdateActionDto, @Res() res: Response) {
-    this.actionService
-      .updateAction(action)
-      .then((action) => res.json({ action }))
-      .catch((error) => handlerError(error));
+  async updateAction(@Body() action: UpdateActionDto, @Res({passthrough: true}) res: Response) {
+    try {
+      const data = await this.actionService.updateAction(action)
+      return data
+    } catch (error) {
+      handlerError(error)
+    }
   }
 
   @Delete(':id')
-  deleteAction(@Param('id') id: number, @Res() res: Response) {
-    this.actionService
-      .deleteAction(id)
-      .then((action) => res.json({ action }))
-      .catch((error) => handlerError(error));
+  async deleteAction(@Param('id') id: number, @Res({passthrough: true}) res: Response) {
+    try {
+      const data = await this.actionService.deleteAction(id)
+      return data
+    } catch (error) {
+      handlerError(error)
+    }
   }
 
   @Put('active/:id')
-  updateActiveAction(
+  async updateActiveAction(
     @Param('id') id: number,
     @Body() active: { active: boolean },
-    @Res() res: Response,
+    @Res({passthrough: true}) res: Response,
   ) {
-    this.actionService
-      .updateActive(id, active.active)
-      .then((action) => res.json({ action }))
-      .catch((error) => handlerError(error));
+    try {
+      const data = await this.actionService.updateActive(id, active.active)
+      return data
+    } catch (error) {
+      handlerError(error)
+    }
   }
 }
