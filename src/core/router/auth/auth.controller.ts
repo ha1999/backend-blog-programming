@@ -50,6 +50,7 @@ export class AuthController {
     @Res({ passthrough: true }) res: Response,
   ) {
     try {
+      console.log(tokenGG, "=============================================================tokenGG==============================');
       const user = await verifyTokenGoogle(tokenGG)
       const resp = await this.authService.checkUserLoginWithGG(user)
       const token = this.authService.generateToken({id:resp.id , name: resp.name, email: resp.email, avatar: resp.avatar})
